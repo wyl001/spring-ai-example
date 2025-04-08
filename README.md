@@ -60,6 +60,14 @@ spring:
         batching-strategy: TOKEN_COUNT
   data:
     redis:
-      url: redis://用户名:密码@地址:端口号
-
-
+      url: redis://:${vector.redis.pwd}@${vector.redis.url}:${vector.redis.port}
+ 
+```
+新增或者编辑 `application.properties`，根据自己情况填写：
+```properties
+api.key.openai= *****
+api.key.zhipuai= *****
+vector.redis.pwd= *****
+vector.redis.url= *****
+vector.redis.port= *****
+```
