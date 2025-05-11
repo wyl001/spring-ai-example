@@ -1,5 +1,6 @@
 package cn.linux95.springaiexample.controller;
 
+import cn.linux95.springaiexample.domain.Actor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Flux;
 
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY;
+
 
 @RestController
 @RequestMapping("/zhipuai/chat")
@@ -54,7 +56,7 @@ public class ZhipuAiChatExampleController {
      * 带聊天记忆
      */
     @GetMapping("/chatWithMemory")
-    public void chatWithMemory(String userMsg) {
+    public String chatWithMemory(String userMsg) {
         ChatResponse chatResponse = chatClient.prompt()
                 .user(userMsg)
                 .advisors(
@@ -63,7 +65,8 @@ public class ZhipuAiChatExampleController {
                 )
                 .call()
                 .chatResponse();
-        log.info("response:{}", chatResponse.getResult().getOutput().getText());
+        log.info("response:{}", chatResponse);
+        return chatResponse.getResult().getOutput().getText();
         
     }
     
@@ -103,7 +106,13 @@ public class ZhipuAiChatExampleController {
      */
     @GetMapping("/structuredChat")
     public void structuredChat() {
-//        new BeanOutputConverter<>()
+        Actor entity = chatClient.prompt()
+                .user(u->u.text("请用结构化输出一个演员 {actor} 的名字和电影等信息").param("actor", "刘德华"))
+                .call()
+                .entity(Actor.class);
+        log.info("response:{}", entity);
+    //     response:Actor(name=Lau Tak Wah, age=60, sex=Male, movies=[Movie(name=The Dark Knight, year=2008, type=Action), Movie(name=Crazy Rich Asians, year=2018, type=Comedy), Movie(name=The Fast and the Furious 7, year=2015, type=Action)])
+        
     }
     
 }

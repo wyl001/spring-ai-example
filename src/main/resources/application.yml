@@ -1,27 +1,7 @@
 spring:
-  ai:
-    openai:
-      base-url: https://api.deepseek.com
-      api-key: ${api.key.openai}
-      embedding:
-        enabled: false
-      chat:
-        enabled: false
-        options:
-          model: deepseek-chat
-    zhipuai:
-      chat:
-        enabled: true
-        options:
-          model: glm-4-flash
-      api-key: ${api.key.zhipuai}
-    vectorstore:
-      redis:
-        initialize-schema: true
-        index-name: custom-index
-        prefix: custom-prefix
-        batching-strategy: TOKEN_COUNT
-  data:
-    redis:
-      url: redis://:7UaWyBs8rN1Nqvodukrll31AIf8yOelJ@redis-17951.crce178.ap-east-1-1.ec2.redns.redis-cloud.com:17951
-
+  application:
+   name: spring-ai-example
+  profiles:
+    active: dev
+server:
+  port: 18080
